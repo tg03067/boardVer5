@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.boardver5.comment.CommentMapper">
+    <insert id="postComment">
+        INSERT INTO comment
+        SET comment_contents = #{contents}
+        , writer_id = #{writerId}
+        , board_id = #{boardId}
+    </insert>
+    <update id="putComment">
+        UPDATE comment
+        SET comment_contents = #{contents}
+        WHERE writer_id = #{writerId}
+        AND comment_id = #{commentId}
+    </update>
+    <delete id="delComment">
+        DELETE FROM comment
+        WHERE comment_id = #{commentId}
+    </delete>
+    <select id="getComment">
+        SELECT B.board_id AS boardId, A.comment_id AS commentId, A.comment_contents AS contents,
+               A.writer_id AS writerId, A.created_at AS createdAt, A.updated_at AS updatedAt
+        FROM comment A
+        INNER JOIN board B
+        ON A.writer_id = B.writer_id
+        LIMIT #{startIdx}, #{size}
+    </select>
+</mapper>
